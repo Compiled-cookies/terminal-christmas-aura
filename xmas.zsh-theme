@@ -98,12 +98,12 @@ seconds_left() {
 	echo $((60 - $(date +%S)))
 }
 
-# time_until_xmas() {
-# 	echo ${Red}$(days_left)d ${Yellow}$(hours_left)h ${Green}$(minutes_left)m ${Blue}$(seconds_left)s
-# }
-
 time_until_xmas() {
-	echo %{$fg[red]%}$(days_left)d %{$fg[yellow]%}$(hours_left)h %{$fg[green]%}$(minutes_left)m %{$fg[blue]%}$(seconds_left)s%{$reset_color%}
+    if (($(days_left) < 0)); then
+        echo "Happy New Year!"
+    else
+	    echo 'until xmas:' %{$fg[red]%}$(days_left)d %{$fg[yellow]%}$(hours_left)h %{$fg[green]%}$(minutes_left)m %{$fg[blue]%}$(seconds_left)s%{$reset_color%}
+    fi
 }
 
 # returns 👾 if there are errors, nothing otherwise
@@ -119,11 +119,10 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 # putting it all together
 PROMPT='%B$(username) $(directory)$(git_prompt_info)%b '
-RPROMPT='until xmas: $(time_until_xmas) '
+RPROMPT='$(time_until_xmas) '
 
 TMOUT=1
 
 TRAPALRM() {
     zle reset-prompt
 }
-
