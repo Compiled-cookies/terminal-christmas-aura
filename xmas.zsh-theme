@@ -1,4 +1,5 @@
 health=6
+seconds_since_heal=0
 
 # purple username
 username() {
@@ -75,11 +76,20 @@ RPROMPT='$(santa_face) $(santa_health)   $(time_until_xmas)'
 TMOUT=1
 
 TRAPALRM() {
+  if (($seconds_since_heal > 120 && $health > 0)); then  # Heal reindeers every x seconds
+    # shellcheck disable=SC2219
+    let health=$(( health+1 < 6 ? health+1 : 6 ))
+    let seconds_since_heal=0
+  fi
+
+  # shellcheck disable=SC2219
+  let seconds_since_heal=seconds_since_heal+1
+
   zle reset-prompt
 }
 
 TRAPERR() {
   # shellcheck disable=SC2219
   let health=$(( health-1 >= 0 ? health-1 : 0 ))
-  print -u2 Exit status: $?
+  print -u2 exit status: $?
 }
