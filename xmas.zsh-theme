@@ -12,28 +12,32 @@ directory() {
 }
 
 # current time with milliseconds
+day_in_the_year() {
+  date +%j | sed 's/^0*//'
+}
+
 days_left() {
 	echo $((31 - $(date +%d)))
 }
 
 hours_left() {
-	echo $((24 - $(date +%H)))
+	echo $((23 - $(date +%H)))
 }
 
 minutes_left() {
-	echo $((60 - $(date +%M)))
+	echo $((59 - $(date +%M)))
 }
-	
+
 seconds_left() {
-	echo $((60 - $(date +%S)))
+	echo $((59 - $(date +%S)))
 }
 
 time_until_xmas() {
   if (($health <= 0)); then
     echo %{$fg[red]%}"New Year is CANCELLED"%{$reset_color%}
-  elif (($(days_left) < 0)); then
+  elif (($(day_in_the_year) < 10)); then
     echo "Happy New Year!"
-  else
+  elif (($(day_in_the_year) > $((360 - 15)))); then
     echo 'until new year:' %{$fg[red]%}$(days_left)d %{$fg[yellow]%}$(hours_left)h %{$fg[green]%}$(minutes_left)m %{$fg[blue]%}$(seconds_left)s%{$reset_color%}
   fi
 }
