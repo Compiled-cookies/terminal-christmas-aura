@@ -93,7 +93,7 @@ TRAPALRM() {
 }
 
 TRAPERR() {
+  print -u2 exit status: $?
   # shellcheck disable=SC2219
   let health=$(( health-1 >= 0 ? health-1 : 0 ))
-  print -u2 exit status: $?
 }
